@@ -41,7 +41,7 @@ const Home: NextPage = () => {
             size="lg"
             ml={20}
             mr={20}
-            onClick={() => signIn()}
+            onClick={() => signIn('spotify')}
           >
             始める!!!!
           </Button>
