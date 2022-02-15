@@ -1,4 +1,5 @@
 import { Story } from '@storybook/react';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 
@@ -19,5 +20,8 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+  },
+  viewport: {
+    viewports: INITIAL_VIEWPORTS,
   },
 };
