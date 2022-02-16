@@ -18,13 +18,13 @@ const PlaylistCard = (props: PlaylistCardProps) => {
         <Box>
           <Text
             fontSize="3xl"
-            maxW={300}
+            maxW={220}
             fontWeight="extrabold"
             display="-webkit-box"
             overflow="hidden"
             sx={{
-              '-webkit-line-clamp': '2',
-              '-webkit-box-orient': 'vertical',
+              'WebkitLineClamp': '2',
+              'WebkitBoxOrient': 'vertical',
             }}
           >
             {name}
