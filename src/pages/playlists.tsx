@@ -13,9 +13,9 @@ import { useRouter } from 'next/router';
 import { Session } from 'next-auth';
 import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
-import { fetcher } from '../utils/api';
 import { useState, useEffect } from 'react';
 import { isValidSession } from '../utils/session';
+import useScrollPlaylists from '../hooks/useScrollPlaylists';
 
 type PlaylistsProps = {
   session: Session;
@@ -24,11 +24,14 @@ type PlaylistsProps = {
 const Playlists: NextPage<PlaylistsProps> = () => {
   const { data: session } = useSession();
 
-  const { data, error } = useSWR('/api/spotify/playlists', (url) =>
-    fetcher(url, session?.token.accessToken)
+  const { data, error, isLast, loadMore } = useScrollPlaylists(
+    session?.token.accessToken
   );
 
   console.log({ data });
+
+  if (error) return <div>failed to load</div>;
+  if (!data) return <div>loading...</div>;
 
   return (
     <div>

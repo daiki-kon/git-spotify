@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse, NextPage } from 'next';
 import Spotify from 'next-auth/providers/spotify';
 import axios from 'axios';
 
@@ -19,10 +19,12 @@ type SpotifyPlaylists = {
       total: number;
     };
   }[];
+  next: string;
+  total: number;
 };
 
 type GetPlaylistsResponse = {
-  description: string;
+  description: string | undefined;
   id: string;
   imageUrl: string | undefined;
   name: string;
@@ -31,10 +33,12 @@ type GetPlaylistsResponse = {
 }[];
 
 const getPlaylists = async (
-  accessToken: string
+  accessToken: string,
+  offset: number,
+  limit: number
 ): Promise<GetPlaylistsResponse> => {
   const playlistsResponse = await axios.get<SpotifyPlaylists>(
-    'https://api.spotify.com/v1/me/playlists',
+    `https://api.spotify.com/v1/me/playlists?offset=${offset}&limit=${limit}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +48,7 @@ const getPlaylists = async (
   );
 
   return playlistsResponse.data.items.map((item) => ({
-    description: item.description,
+    description: item.description === '' ? undefined : item.description,
     id: item.id,
     imageUrl: item.images.length !== 0 ? item?.images[0].url : undefined,
     name: item.name,
@@ -57,17 +61,31 @@ export default async function playlists(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.method);
   if (req.method === 'GET') {
     const {
-      query: { accessToken },
+      query: { accessToken, page, limit },
     } = req;
 
     if (typeof accessToken !== 'string') {
       return;
     }
 
-    const response = await getPlaylists(accessToken);
+    if (typeof page !== 'string' || typeof limit !== 'string') {
+      return;
+    }
+
+    if (Number(page) === NaN || Number(limit) === NaN) {
+      return;
+    }
+
+    const offset = Number(page) < 1 ? 0 : (Number(page) - 1) * Number(limit);
+
+    const response = await getPlaylists(
+      accessToken,
+      Number(offset),
+      Number(limit)
+    );
+
     res.status(200).json(response);
   }
 }
