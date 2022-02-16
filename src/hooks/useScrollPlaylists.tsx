@@ -54,7 +54,7 @@ export default function useScrollPlaylists(
     };
   }
 
-  const isLast = data?.slice(-1).length < LIMIT ? true : false;
+  const isLast = data?.slice(-1).flat().length !== LIMIT ? true : false;
 
   return {
     data: data?.flat(),
