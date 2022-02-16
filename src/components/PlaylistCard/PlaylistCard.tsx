@@ -6,13 +6,14 @@ export type PlaylistCardProps = {
   coverImageUrl: string;
   owner: string;
   tracksCount: number;
+  onClickCard: (playlistsId: string) => void;
 };
 
 const PlaylistCard = (props: PlaylistCardProps) => {
-  const { coverImageUrl, name, id, owner, tracksCount } = props;
+  const { coverImageUrl, name, id, owner, tracksCount, onClickCard } = props;
 
   return (
-    <Box key={id} maxW={400}>
+    <Box key={id} maxW={400} onClick={() => onClickCard(id)}>
       <HStack>
         <Img src={coverImageUrl} boxSize="140px" />
         <Box>
@@ -23,8 +24,8 @@ const PlaylistCard = (props: PlaylistCardProps) => {
             display="-webkit-box"
             overflow="hidden"
             sx={{
-              'WebkitLineClamp': '2',
-              'WebkitBoxOrient': 'vertical',
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical',
             }}
           >
             {name}
