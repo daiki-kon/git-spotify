@@ -16,12 +16,12 @@ type UseScrollPlaylistsResponse = {
   loadMore: () => void;
 };
 
-const LIMIT = 10; // 10件ずつ読み込む
+const LIMIT = 20; // 10件ずつ読み込む
 export default function useScrollPlaylists(
   accessToken: string | undefined
 ): UseScrollPlaylistsResponse {
   const getKey = (pageIndex: number, previousPageData: any) => {
-    if (previousPageData && !previousPageData.length) return null; // reached the end
+    if (previousPageData && !previousPageData.length) return null;
     return [
       `/api/spotify/playlists?page=${pageIndex}&limit=${LIMIT}`,
       accessToken,

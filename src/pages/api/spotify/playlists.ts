@@ -1,5 +1,4 @@
-import { NextApiRequest, NextApiResponse, NextPage } from 'next';
-import Spotify from 'next-auth/providers/spotify';
+import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 
 type SpotifyPlaylists = {
@@ -78,7 +77,7 @@ export default async function playlists(
       return;
     }
 
-    const offset = Number(page) < 1 ? 0 : (Number(page) - 1) * Number(limit);
+    const offset = Number(page) * Number(limit);
 
     const response = await getPlaylists(
       accessToken,
