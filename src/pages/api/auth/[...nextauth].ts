@@ -2,7 +2,6 @@ import NextAuth from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 import { getSpotifyScope } from '../../../utils/spotify';
 import { scope } from '../../../const/spotifyScope';
-import Hoge from '../../hoge';
 
 export default NextAuth({
   providers: [
