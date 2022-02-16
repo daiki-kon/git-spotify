@@ -1,5 +1,5 @@
 {
-  "name": "git-spotify",
+  "name": "graphfy",
   "private": true,
   "scripts": {
     "dev": "next dev",
