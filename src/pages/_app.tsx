@@ -8,8 +8,9 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <ChakraProvider>
       <SessionProvider session={session}>
-        <Auth />
-        <Component {...pageProps} />
+        <Auth>
+          <Component {...pageProps} />
+        </Auth>
       </SessionProvider>
     </ChakraProvider>
   );
