@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 import { getSpotifyScope } from '../../../utils/spotify';
 import { scope } from '../../../const/spotifyScope';
+import Hoge from '../../hoge';
 
 export default NextAuth({
   providers: [
@@ -15,9 +16,17 @@ export default NextAuth({
   ],
 
   callbacks: {
-    async session({ session, token, user }) {
-      // Send properties to the client, like an access_token from a provider.
-      session.accessToken = token;
+    jwt({ token, account }) {
+      if (account) {
+        token.id = account.id;
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.token = token;
+
       return session;
     },
   },
