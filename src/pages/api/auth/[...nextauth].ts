@@ -13,6 +13,9 @@ export default NextAuth({
       )}`,
     }),
   ],
+  // NOTE: vercelにデプロイするために必要
+  // https://zenn.dev/seiwa/articles/bab4b36966a391
+  secret: process.env.SECRET,
 
   callbacks: {
     jwt({ token, account }) {
