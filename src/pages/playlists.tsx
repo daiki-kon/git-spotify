@@ -1,21 +1,19 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
-import {
-  useSession,
-  signIn,
-  signOut,
-  getSession,
-  getCsrfToken,
-} from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useSession, signOut } from 'next-auth/react';
 import { Session } from 'next-auth';
-import { GetServerSideProps } from 'next';
-import useSWR from 'swr';
-import { useState, useEffect } from 'react';
-import { isValidSession } from '../utils/session';
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Heading,
+  HStack,
+  Img,
+  Spacer,
+  Stack,
+} from '@chakra-ui/react';
 import useScrollPlaylists from '../hooks/useScrollPlaylists';
+import PlaylistCard from '../components/PlaylistCard';
 
 type PlaylistsProps = {
   session: Session;
@@ -28,21 +26,47 @@ const Playlists: NextPage<PlaylistsProps> = () => {
     session?.token.accessToken
   );
 
-  console.log({ data });
+  console.log(data);
 
   if (error) return <div>failed to load</div>;
-  if (!data) return <div>loading...</div>;
+  if (!data || data[0] === null) return <div>loading...</div>;
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          signOut();
-        }}
-      >
-        Sign out
-      </button>
-    </div>
+    <Box>
+      <Stack>
+        <Button
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Sign out
+        </Button>
+        {data?.map((item) => (
+          <PlaylistCard
+            key={item?.id}
+            {...item}
+            coverImageUrl={
+              item?.imageUrl === undefined
+                ? 'https://bit.ly/dan-abramov'
+                : item.imageUrl
+            }
+          />
+        ))}
+
+        {isLast === true ? (
+          <></>
+        ) : (
+          <Button
+            mb={0}
+            onClick={() => {
+              loadMore();
+            }}
+          >
+            Load More
+          </Button>
+        )}
+      </Stack>
+    </Box>
   );
 };
 
