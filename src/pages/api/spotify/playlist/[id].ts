@@ -89,12 +89,22 @@ const getPlaylistItems = async (
   }));
 };
 
-const getPlaylistName = async (
+const getPlaylistInfo = async (
   accessToken: string,
   id: string
-): Promise<{ name: string }> => {
-  const playlistNameResponse = await axios.get<{ name: string }>(
-    `https://api.spotify.com/v1/playlists/${id}?fields=name`,
+): Promise<{ name: string; url: string; total: number }> => {
+  const playlistInfoResponse = await axios.get<{
+    name: string;
+    tracks: { total: number };
+  }>(`https://api.spotify.com/v1/playlists/${id}?fields=name,tracks.total`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const playlistCoverImageResponse = await axios.get<{ url: string }[]>(
+    `https://api.spotify.com/v1/playlists/${id}/images`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -103,9 +113,14 @@ const getPlaylistName = async (
     }
   );
 
-  console.log(playlistNameResponse.data);
+  console.log(playlistInfoResponse.data);
+  console.log('url', playlistCoverImageResponse.data[0].url);
 
-  return playlistNameResponse.data;
+  return {
+    name: playlistInfoResponse.data.name,
+    url: playlistCoverImageResponse.data[0].url,
+    total: playlistInfoResponse.data.tracks.total,
+  };
 };
 
 export default async function playlistItems(
@@ -121,8 +136,8 @@ export default async function playlistItems(
       return;
     }
 
-    if (field === 'name') {
-      const response = await getPlaylistName(accessToken, id as string);
+    if (field === 'info') {
+      const response = await getPlaylistInfo(accessToken, id as string);
       res.status(200).json(response);
       return;
     }

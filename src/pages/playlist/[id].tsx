@@ -7,6 +7,7 @@ import {
   Button,
   Center,
   Container,
+  Flex,
   GridItem,
   Heading,
   HStack,
@@ -28,15 +29,20 @@ const Playlists: NextPage<PlaylistsProps> = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { playlistName, data, error, isLast, loadMore } =
+  const { playlistName, playlistCoverImage, playlistTrackTotal, data, error, isLast, loadMore } =
     useScrollPlaylistItems(session?.token.accessToken, id as string);
   if (!data || data[0] === null) return <div>loading...</div>;
-
+  console.log(playlistCoverImage);
   return (
     <Stack>
-      <Text>
-        {playlistName} : {id}
-      </Text>
+      <Flex>
+        <Img src={playlistCoverImage} boxSize="100px"></Img>
+        <Box ml={5}>
+          <Text fontSize="3xl">{playlistName}</Text>
+          <Text>{id}</Text>
+          <Text>{playlistTrackTotal} 曲</Text>
+        </Box>
+      </Flex>
 
       <PlaylistGraph items={data} />
 

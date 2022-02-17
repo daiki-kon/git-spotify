@@ -11,6 +11,8 @@ type PlaylistItemsData = {
 
 type UseScrollPlaylistItemsResponse = {
   playlistName: string | undefined;
+  playlistCoverImage: string | undefined;
+  playlistTrackTotal: number | undefined;
   data: PlaylistItemsData | undefined;
   error: Error | undefined;
   isLast: boolean;
@@ -43,9 +45,12 @@ export default function useScrollPlaylistItems(
     Error
   >(getKey, fetcher);
 
-  const { data: playlist } = useSWR<{ name: string }>(
-    `/api/spotify/playlist/${id}?field=name`,
-    (url) => fetcher(url, accessToken)
+  const { data: playlistInfo } = useSWR<{
+    name: string;
+    url: string;
+    total: number;
+  }>(`/api/spotify/playlist/${id}?field=info`, (url) =>
+    fetcher(url, accessToken)
   );
 
   // 最新の日付順にソート
@@ -60,6 +65,8 @@ export default function useScrollPlaylistItems(
   if (data === undefined) {
     return {
       playlistName: undefined,
+      playlistCoverImage: undefined,
+      playlistTrackTotal: undefined,
       data: undefined,
       error,
       isLast: false,
@@ -70,7 +77,9 @@ export default function useScrollPlaylistItems(
   const isLast = data?.slice(-1).flat().length !== LIMIT ? true : false;
 
   return {
-    playlistName: playlist?.name,
+    playlistName: playlistInfo?.name,
+    playlistCoverImage: playlistInfo?.url,
+    playlistTrackTotal: playlistInfo?.total,
     data: sortData(data?.flat()),
     error,
     isLast,
