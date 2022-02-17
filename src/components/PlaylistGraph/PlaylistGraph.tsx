@@ -34,9 +34,9 @@ const PlaylistGraph = (props: PlaylistGraphProps) => {
               {items.length - 1 === index ? (
                 <></>
               ) : (
-                <line x1="20" y1="0" x2="20" y2="200" stroke="#e74c3c" strokeWidth="4" />
+                <line x1="20" y1="0" x2="20" y2="200" stroke="#1BD760" strokeWidth="4" />
               )}
-              <circle cx="20" cy="10" r="10" fill="#e74c3c" />
+              <circle cx="20" cy="10" r="10" fill="#1BD760" />
             </svg>
           </Box>
           <Box>
