@@ -1,3 +1,4 @@
+import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 
 type PlaylistItemsData = {
@@ -9,6 +10,7 @@ type PlaylistItemsData = {
 }[];
 
 type UseScrollPlaylistItemsResponse = {
+  playlistName: string | undefined;
   data: PlaylistItemsData | undefined;
   error: Error | undefined;
   isLast: boolean;
@@ -40,7 +42,12 @@ export default function useScrollPlaylistItems(
     PlaylistItemsData,
     Error
   >(getKey, fetcher);
-  
+
+  const { data: playlist } = useSWR<{ name: string }>(
+    `/api/spotify/playlist/${id}?field=name`,
+    (url) => fetcher(url, accessToken)
+  );
+
   // 最新の日付順にソート
   const sortData = (data: PlaylistItemsData): PlaylistItemsData => {
     return data.sort((a, b) => (a.added_at < b.added_at ? 1 : -1));
@@ -52,6 +59,7 @@ export default function useScrollPlaylistItems(
 
   if (data === undefined) {
     return {
+      playlistName: undefined,
       data: undefined,
       error,
       isLast: false,
@@ -62,6 +70,7 @@ export default function useScrollPlaylistItems(
   const isLast = data?.slice(-1).flat().length !== LIMIT ? true : false;
 
   return {
+    playlistName: playlist?.name,
     data: sortData(data?.flat()),
     error,
     isLast,

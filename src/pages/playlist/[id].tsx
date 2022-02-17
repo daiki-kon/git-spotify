@@ -16,6 +16,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import useScrollPlaylistItems from '../../hooks/useScrollPlaylistItems';
+import useSWR from 'swr';
 
 type PlaylistsProps = {
   session: Session;
@@ -26,18 +27,17 @@ const Playlists: NextPage<PlaylistsProps> = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data, error, isLast, loadMore } = useScrollPlaylistItems(
-    session?.token.accessToken,
-    id as string
-  );
-
-  console.log(data);
+  const { playlistName, data, error, isLast, loadMore } =
+    useScrollPlaylistItems(session?.token.accessToken, id as string);
 
   return (
     <Stack>
-      <Text>{id}</Text>
+      <Text>
+        {playlistName} : {id}
+      </Text>
+
       {data?.map((item) => (
-        <Text key={item.trackId}>{item.added_at}</Text>
+        <Text key={item?.trackId}>{item?.added_at}</Text>
       ))}
 
       {isLast === true ? (

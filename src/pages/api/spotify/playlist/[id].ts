@@ -64,16 +64,41 @@ const getPlaylistItems = async (
   }));
 };
 
+const getPlaylistName = async (
+  accessToken: string,
+  id: string
+): Promise<{name: string}> => {
+  const playlistNameResponse = await axios.get<{ name: string }>(
+    `https://api.spotify.com/v1/playlists/${id}?fields=name`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  console.log(playlistNameResponse.data);
+
+  return playlistNameResponse.data;
+};
+
 export default async function playlistItems(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
     const {
-      query: { accessToken, page, limit, id },
+      query: { accessToken, page, limit, id, field },
     } = req;
 
     if (typeof accessToken !== 'string') {
+      return;
+    }
+
+    if (field === 'name') {
+      const response = await getPlaylistName(accessToken, id as string);
+      res.status(200).json(response);
       return;
     }
 
