@@ -3,19 +3,19 @@ import { Box, HStack, Img, Text } from '@chakra-ui/react';
 export type PlaylistCardProps = {
   name: string;
   id: string;
-  coverImageUrl: string;
+  coverImage: string;
   owner: string;
   tracksCount: number;
   onClickCard: (playlistsId: string) => void;
 };
 
 const PlaylistCard = (props: PlaylistCardProps) => {
-  const { coverImageUrl, name, id, owner, tracksCount, onClickCard } = props;
+  const { coverImage, name, id, owner, tracksCount, onClickCard } = props;
 
   return (
     <Box key={id} maxW={400} onClick={() => onClickCard(id)}>
       <HStack>
-        <Img src={coverImageUrl} boxSize="140px" />
+        <Img src={coverImage} boxSize="140px" />
         <Box>
           <Text
             fontSize="3xl"

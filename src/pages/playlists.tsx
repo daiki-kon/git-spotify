@@ -1,11 +1,7 @@
 import type { NextPage } from 'next';
 import { useSession, signOut } from 'next-auth/react';
 import { Session } from 'next-auth';
-import {
-  Box,
-  Button,
-  Stack,
-} from '@chakra-ui/react';
+import { Box, Button, Stack } from '@chakra-ui/react';
 import useScrollPlaylists from '../hooks/useScrollPlaylists';
 import PlaylistCard from '../components/PlaylistCard';
 import { useRouter } from 'next/router';
@@ -40,9 +36,9 @@ const Playlists: NextPage<PlaylistsProps> = () => {
         {data?.map((item) => (
           <PlaylistCard
             key={item?.id}
-            coverImageUrl={
+            coverImage={
               item?.imageUrl === undefined
-                ? 'https://bit.ly/dan-abramov'
+                ? 'http://flat-icon-design.com/f/f_event_22/s256_f_event_22_0bg.png'
                 : item.imageUrl
             }
             onClickCard={(playlistId) => router.push(`playlist/${playlistId}`)}
