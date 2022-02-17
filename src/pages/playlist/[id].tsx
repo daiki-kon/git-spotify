@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import useScrollPlaylistItems from '../../hooks/useScrollPlaylistItems';
 import useSWR from 'swr';
+import PlaylistGraph from '../../components/PlaylistGraph';
 
 type PlaylistsProps = {
   session: Session;
@@ -29,6 +30,7 @@ const Playlists: NextPage<PlaylistsProps> = () => {
 
   const { playlistName, data, error, isLast, loadMore } =
     useScrollPlaylistItems(session?.token.accessToken, id as string);
+  if (!data || data[0] === null) return <div>loading...</div>;
 
   return (
     <Stack>
@@ -36,9 +38,7 @@ const Playlists: NextPage<PlaylistsProps> = () => {
         {playlistName} : {id}
       </Text>
 
-      {data?.map((item) => (
-        <Text key={item?.trackId}>{item?.added_at}</Text>
-      ))}
+      <PlaylistGraph items={data} />
 
       {isLast === true ? (
         <></>

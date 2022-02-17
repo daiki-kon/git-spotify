@@ -11,7 +11,7 @@ const TrackCard = (props: TrackCardProps) => {
   const { imageUrl, trackId, trackName, artistName } = props;
 
   return (
-    <Box key={trackId} maxW={400}>
+    <Box key={trackId}>
       <HStack>
         <Img src={imageUrl} boxSize="50px" />
         <Box>
