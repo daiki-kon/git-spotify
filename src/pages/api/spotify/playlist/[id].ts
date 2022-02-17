@@ -38,12 +38,36 @@ const getPlaylistItems = async (
   offset: number,
   limit: number
 ): Promise<GetPlaylistItemsResponse> => {
+  const playlistTotalResponse = await axios.get<{ total: number }>(
+    `https://api.spotify.com/v1/playlists/${id}/tracks?fields=total`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  const total = playlistTotalResponse.data.total;
+
+  console.log('total', total);
+
+  let actualOffset = offset === 0 ? total - limit : total - offset - limit;
+  let actualLimit = limit;
+  if (actualOffset < 0) {
+    actualOffset = 0;
+    actualLimit = total - offset;
+  }
+
+  console.log('offset', offset);
+  console.log('actualoffset', actualOffset);
+
   // tracks.items(added_at,added_by.id,track(id,name,album(artists,images)))
   const fields =
     'items(added_at%2Cadded_by.id%2Ctrack(id%2Cname%2Calbum(artists%2Cimages)))';
 
   const playlistItemsResponse = await axios.get<SpotifyPlaylistItem>(
-    `https://api.spotify.com/v1/playlists/${id}/tracks?fields=${fields}&limit=${limit}&offset=${offset}`,
+    `https://api.spotify.com/v1/playlists/${id}/tracks?fields=${fields}&limit=${actualLimit}&offset=${actualOffset}`,
     {
       headers: {
         'Accept-Language': 'ja',

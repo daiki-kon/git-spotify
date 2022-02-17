@@ -17,7 +17,7 @@ type UseScrollPlaylistItemsResponse = {
   loadMore: () => void;
 };
 
-const LIMIT = 100; // 1000件ずつ読み込む
+const LIMIT = 50; // 50件ずつ読み込む
 export default function useScrollPlaylistItems(
   accessToken: string | undefined,
   id: string
