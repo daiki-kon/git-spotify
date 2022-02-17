@@ -7,12 +7,15 @@ import {
   Button,
   Center,
   Container,
+  GridItem,
   Heading,
   HStack,
   Img,
   Spacer,
   Stack,
+  Text,
 } from '@chakra-ui/react';
+import useScrollPlaylistItems from '../../hooks/useScrollPlaylistItems';
 
 type PlaylistsProps = {
   session: Session;
@@ -23,10 +26,26 @@ const Playlists: NextPage<PlaylistsProps> = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const { data, error, isLast, loadMore } = useScrollPlaylistItems(
+    session?.token.accessToken,
+    id as string
+  );
+
+  console.log(data);
+
   return (
-    <Box>
-      <p>Hello!! {id} </p>
-    </Box>
+    <Stack>
+      <Text>{id}</Text>
+      {data?.map((item) => (
+        <Text key={item.trackId}>{item.added_at}</Text>
+      ))}
+
+      {isLast === true ? (
+        <></>
+      ) : (
+        <Button onClick={() => loadMore()}>Load More</Button>
+      )}
+    </Stack>
   );
 };
 
