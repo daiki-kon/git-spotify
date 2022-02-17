@@ -26,13 +26,6 @@ const Playlists: NextPage<PlaylistsProps> = () => {
   return (
     <Box>
       <Stack>
-        <Button
-          onClick={() => {
-            signOut();
-          }}
-        >
-          Sign out
-        </Button>
         {data?.map((item) => (
           <PlaylistCard
             key={item?.id}

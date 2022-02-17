@@ -28,7 +28,7 @@ const Home: NextPage = () => {
         </Center>
 
         <Center>
-          <Container centerContent mt={10} p={3} m={5} bg="gray.100">
+          <Container centerContent mt={10} p={3} m={5}>
             SpotifyのプレイリストをGit
             Graphのように可視化できるWebaアプリケーションです。
             <br />
