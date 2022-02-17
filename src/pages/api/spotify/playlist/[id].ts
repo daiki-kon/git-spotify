@@ -46,6 +46,7 @@ const getPlaylistItems = async (
     `https://api.spotify.com/v1/playlists/${id}/tracks?fields=${fields}&limit=${limit}&offset=${offset}`,
     {
       headers: {
+        'Accept-Language': 'ja',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
@@ -67,7 +68,7 @@ const getPlaylistItems = async (
 const getPlaylistName = async (
   accessToken: string,
   id: string
-): Promise<{name: string}> => {
+): Promise<{ name: string }> => {
   const playlistNameResponse = await axios.get<{ name: string }>(
     `https://api.spotify.com/v1/playlists/${id}?fields=name`,
     {
