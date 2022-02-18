@@ -33,7 +33,15 @@ const StyledGraphSVG = ({ isTop }: { isTop: boolean }) => {
         <></>
       )}
 
-      <line x1="20" y1="0" x2="20" y2="110" stroke="#1BD760" strokeWidth="4" strokeLinecap="round" />
+      <line
+        x1="20"
+        y1="0"
+        x2="20"
+        y2={height}
+        stroke="#1BD760"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
     </svg>
   );
 };
@@ -41,8 +49,8 @@ const StyledGraphSVG = ({ isTop }: { isTop: boolean }) => {
 const PlaylistGraph = (props: PlaylistGraphProps) => {
   const { items } = props;
 
+
   const { data } = useOrganizeTracks(items);
-  console.log({ data });
   return (
     <Box>
       {data.map((item, index) => (
@@ -51,11 +59,7 @@ const PlaylistGraph = (props: PlaylistGraphProps) => {
             <StyledGraphSVG isTop={item.isTop} />
           </Box>
           <Box ml={5}>
-            {item.isTop === true ? (
-              <Text mb={3}>{item.date}</Text>
-            ) : (
-              <></>
-            )}
+            {item.isTop === true ? <Text mb={3}>{item.date}</Text> : <></>}
             <TrackCard {...item.item} />
           </Box>
         </Flex>

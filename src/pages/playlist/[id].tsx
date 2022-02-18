@@ -39,7 +39,7 @@ const Playlists: NextPage<PlaylistsProps> = () => {
     loadMore,
   } = useScrollPlaylistItems(session?.token.accessToken, id as string);
   if (!data || data[0] === null) return <div>loading...</div>;
-  console.log(playlistCoverImage);
+
   return (
     <Stack>
       <Box>

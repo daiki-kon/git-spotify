@@ -50,17 +50,12 @@ const getPlaylistItems = async (
 
   const total = playlistTotalResponse.data.total;
 
-  console.log('total', total);
-
   let actualOffset = offset === 0 ? total - limit : total - offset - limit;
   let actualLimit = limit;
   if (actualOffset < 0) {
     actualOffset = 0;
     actualLimit = total - offset;
   }
-
-  console.log('offset', offset);
-  console.log('actualoffset', actualOffset);
 
   // tracks.items(added_at,added_by.id,track(id,name,album(artists,images)))
   const fields =
@@ -112,9 +107,6 @@ const getPlaylistInfo = async (
       },
     }
   );
-
-  console.log(playlistInfoResponse.data);
-  console.log('url', playlistCoverImageResponse.data[0].url);
 
   return {
     name: playlistInfoResponse.data.name,
