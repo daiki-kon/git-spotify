@@ -38,7 +38,9 @@ export default function useOrganizeTracks(
   };
 
   useEffect(() => {
-    items.map((item) => {
+    // TODO: itemが追加されるたびにすべてのitemを回しているので改善したい
+    setResponseDateDate([]);
+    items.forEach((item) => {
       setResponseDateDate((preState) => {
         const { key, formattedDate } = formatDate(item.added_at);
 
