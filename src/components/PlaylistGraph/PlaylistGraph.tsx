@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import useOrganizeTracks from '../../hooks/useOrganizeTracks';
 import TrackCard from '../TrackCard';
 
 type PlaylistItem = {
@@ -22,26 +23,40 @@ export type PlaylistGraphProps = {
   items: PlaylistItem[];
 };
 
+const StyledGraphSVG = ({ isTop }: { isTop: boolean }) => {
+  const height = isTop === true ? 110 : 80;
+  return (
+    <svg width={40} height={height}>
+      {isTop === true ? (
+        <circle cx="20" cy="10" r="10" fill="#1BD760" />
+      ) : (
+        <></>
+      )}
+
+      <line x1="20" y1="0" x2="20" y2="110" stroke="#1BD760" strokeWidth="4" strokeLinecap="round" />
+    </svg>
+  );
+};
+
 const PlaylistGraph = (props: PlaylistGraphProps) => {
   const { items } = props;
 
+  const { data } = useOrganizeTracks(items);
+  console.log({ data });
   return (
     <Box>
-      {items.map((item, index) => (
+      {data.map((item, index) => (
         <Flex key={index}>
           <Box>
-            <svg width={40} height={110}>
-              {items.length - 1 === index ? (
-                <></>
-              ) : (
-                <line x1="20" y1="0" x2="20" y2="200" stroke="#1BD760" strokeWidth="4" />
-              )}
-              <circle cx="20" cy="10" r="10" fill="#1BD760" />
-            </svg>
+            <StyledGraphSVG isTop={item.isTop} />
           </Box>
-          <Box>
-            <Text mb={3}>{item.added_at}</Text>
-            <TrackCard {...item} />
+          <Box ml={5}>
+            {item.isTop === true ? (
+              <Text mb={3}>{item.date}</Text>
+            ) : (
+              <></>
+            )}
+            <TrackCard {...item.item} />
           </Box>
         </Flex>
       ))}

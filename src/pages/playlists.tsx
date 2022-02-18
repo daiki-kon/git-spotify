@@ -18,8 +18,6 @@ const Playlists: NextPage<PlaylistsProps> = () => {
     session?.token.accessToken
   );
 
-  console.log(data);
-
   if (error) return <div>failed to load</div>;
   if (!data || data[0] === null) return <div>loading...</div>;
 

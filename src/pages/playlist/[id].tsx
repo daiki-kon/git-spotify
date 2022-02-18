@@ -29,23 +29,32 @@ const Playlists: NextPage<PlaylistsProps> = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const { playlistName, playlistCoverImage, playlistTrackTotal, data, error, isLast, loadMore } =
-    useScrollPlaylistItems(session?.token.accessToken, id as string);
+  const {
+    playlistName,
+    playlistCoverImage,
+    playlistTrackTotal,
+    data,
+    error,
+    isLast,
+    loadMore,
+  } = useScrollPlaylistItems(session?.token.accessToken, id as string);
   if (!data || data[0] === null) return <div>loading...</div>;
   console.log(playlistCoverImage);
   return (
     <Stack>
-      <Flex>
-        <Img src={playlistCoverImage} boxSize="100px"></Img>
-        <Box ml={5}>
-          <Text fontSize="3xl">{playlistName}</Text>
-          <Text>{id}</Text>
-          <Text>{playlistTrackTotal} 曲</Text>
+      <Box>
+        <Flex ml={2}>
+          <Img src={playlistCoverImage} boxSize="100px"></Img>
+          <Box ml={5}>
+            <Text fontSize="3xl">{playlistName}</Text>
+            <Text>{id}</Text>
+            <Text>{playlistTrackTotal} 曲</Text>
+          </Box>
+        </Flex>
+        <Box ml={6} mt={5}>
+          <PlaylistGraph items={data} />
         </Box>
-      </Flex>
-
-      <PlaylistGraph items={data} />
-
+      </Box>
       {isLast === true ? (
         <></>
       ) : (
